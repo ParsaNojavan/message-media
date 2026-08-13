@@ -30,6 +30,7 @@
     "@nestjs/platform-express": "^11.1.28",
     "@nestjs/websockets": "^11.1.28",
     "bcrypt": "^6.0.0",
+    "fluent-ffmpeg": "^2.1.3",
     "ioredis": "^5.11.1",
     "joi": "^18.2.3",
     "mongoose": "^9.9.1",
@@ -37,6 +38,7 @@
     "passport-jwt": "^4.0.1",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1",
+    "sharp": "^0.35.3",
     "socket.io": "^4.8.3"
   },
   "devDependencies": {
@@ -46,6 +48,7 @@
     "@nestjs/schematics": "^11.0.0",
     "@nestjs/testing": "^11.0.1",
     "@types/express": "^5.0.6",
+    "@types/fluent-ffmpeg": "^2.1.28",
     "@types/jest": "^30.0.0",
     "@types/multer": "^2.2.0",
     "@types/node": "^24.0.0",
