@@ -42,6 +42,7 @@ export class LocalStorageService extends StorageService {
                 mimeType: file.mimetype,
                 size: file.size,
                 originalName: file.originalname,
+                filePath: newPath
             },
             message: 'File uploaded successfully'
         };

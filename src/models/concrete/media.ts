@@ -17,6 +17,8 @@ export default class Media extends Document implements IEntity {
     url: string
     @Prop({ required: true })
     uploadedBy: Types.ObjectId
+    @Prop()
+    thumbnailUrl?: string
 }
 
 export type MediaDocument = Media & Document & {
