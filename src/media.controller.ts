@@ -10,7 +10,18 @@ export class MediaController {
 
   @Post('upload')
   @UseGuards(new JwtAuthGuard(['user']))
-  @UseInterceptors(FileInterceptor('document'))
+  @UseInterceptors(FileInterceptor('document', {
+    limits: {
+      fileSize: 30 * 1024 * 1024,
+    },
+    fileFilter: (req, file, cb) => {
+      if (file.mimetype.match(/\/(jpg|jpeg|png|webp|pdf|mp4)$/)) {
+        cb(null, true);
+      } else {
+        cb(new BadRequestException('file format not supported'), false);
+      }
+    },
+  }))
   async upload(
     @UploadedFile() file: Express.Multer.File,
     @Req() req
