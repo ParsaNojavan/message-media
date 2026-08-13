@@ -9,6 +9,8 @@ import { JwtModule } from '@nestjs/jwt';
 import StorageService from './storage/abstract/storage.service';
 import { LocalStorageService } from './storage/local.service';
 import { JwtStrategy } from '@app/contracts/utils/jwt_token/strategies/jwt.strategy';
+import ThumbnailService from './thumnail/abstract/thumbnail.service';
+import { ThumbnailServiceImpl } from './thumnail/thumbnail-impl.service';
 
 @Module({
   imports: [ConfigModule.forRoot({
@@ -34,11 +36,17 @@ import { JwtStrategy } from '@app/contracts/utils/jwt_token/strategies/jwt.strat
   MongooseModule.forRoot(process.env.MONGO_STRING?.toString() ?? '', { dbName: 'message_mediadb' }),
   MongooseModule.forFeature([{ name: Media.name, schema: MediaSchema }]),],
   controllers: [MediaController],
-  providers: [MediaService,
+  providers: [
+    MediaService,
     {
       provide: StorageService,
       useClass: LocalStorageService
-    },JwtStrategy
+    },
+    {
+      provide: ThumbnailService,
+      useClass: ThumbnailServiceImpl
+    },
+    JwtStrategy
   ],
 })
 export class MediaModule { }
