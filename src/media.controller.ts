@@ -1,12 +1,14 @@
-import { BadRequestException, Controller, Get, Param, Post, Req, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
+import { BadRequestException, Controller, Get, Param, Post, Query, Req, UploadedFile, UseGuards, UseInterceptors, Headers, UnauthorizedException, ForbiddenException, Res } from '@nestjs/common';
 import { MediaService } from './media.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { JwtAuthGuard } from '@app/contracts/utils/jwt_token/guards/jwt.guard';
 import { HttpContext } from '@app/contracts/utils/crossCuttingConcerns/decorators/http-context.decorator';
+import { JwtService } from '@nestjs/jwt';
+import type { Response as ExpressResponse } from 'express';
 
 @Controller('media')
 export class MediaController {
-  constructor(private readonly mediaService: MediaService) { }
+  constructor(private readonly mediaService: MediaService, private readonly jwtService: JwtService) { }
 
   @Post('upload')
   @UseGuards(new JwtAuthGuard(['user']))
@@ -42,4 +44,22 @@ export class MediaController {
   async download(@Param('id') mediaId: string, @HttpContext() context) {
     return await this.mediaService.downloadFile({ mediaId, context });
   }
+
+
+  @Get(':id/stream')
+  async stream(
+    @Param('id') id: string,
+    @Query('token') token: string,
+    @Headers('range') range: string | undefined,
+    @Res() res: ExpressResponse,
+  ) {
+
+    await this.jwtService.verifyAsync(token).catch(() => {
+      throw new UnauthorizedException('Invalid token');
+    });
+
+    await this.mediaService.streamFile(id, range, res);
+  }
+
+
 }
