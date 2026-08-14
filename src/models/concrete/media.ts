@@ -9,6 +9,8 @@ export default class Media extends Document implements IEntity {
     originalName: string;
     @Prop({ required: true, unique: true })
     fileName: string;
+    @Prop({ required: true, unique: true })
+    filePath: string;
     @Prop({ required: true })
     mimeType: string
     @Prop({ required: true })
